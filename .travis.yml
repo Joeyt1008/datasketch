@@ -1,9 +1,14 @@
 language: python
-python:
 
+python:
   - "3.8"
   # - "nightly"
   # TODO: add nightly back when this issue is fixed: https://github.com/cython/cython/issues/3266
+  
+arch:
+  - amd64
+  - arm64
+
 addons:
   apt:
     sources:
