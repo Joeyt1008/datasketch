@@ -1,7 +1,7 @@
 language: python
 
 python:
-  - "3.8"
+  - "3.6"
   # - "nightly"
   # TODO: add nightly back when this issue is fixed: https://github.com/cython/cython/issues/3266
   
@@ -13,7 +13,7 @@ addons:
   apt:
     sources:
       - sourceline: 'ppa:openjdk-r/ppa'
-      - sourceline: 'deb http://www.apache.org/dist/cassandra/debian 311x main'
+      - sourceline: 'deb http://www.apache.org/dist/cassandra/debian 311x main' 
         key_url: &apache-key https://www.apache.org/dist/cassandra/KEYS
       - sourceline: 'deb-src http://www.apache.org/dist/cassandra/debian 311x main'
         key_url: *apache-key
