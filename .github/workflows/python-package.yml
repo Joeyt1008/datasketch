@@ -86,16 +86,16 @@ jobs:
               export CASS_DRIVER_NO_EXTENSIONS=1 && \
               pip install -e .[test,experimental_aio] && \
               
-              apt-get install mongodb && \
+              apt-get -y install mongodb && \
               service mongodb start && \
               service mongodb status && \
               
               echo "deb http://debian.datastax.com/community stable main" | tee -a /etc/apt/sources.list.d/cassandra.sources.list && \
               curl -L http://debian.datastax.com/debian/repo_key | apt-key add - && \
               apt-get update && \
-              apt-get install openjdk-8-jdk && \
+              apt-get -y install openjdk-8-jdk && \
               java -version && \
-              apt-get install cassandra cython3 && \
+              apt-get -y install cassandra cython3 && \
               bash travis/wait_for_cassandra.sh && \
               
               export DO_TEST_MONGO=true && \
