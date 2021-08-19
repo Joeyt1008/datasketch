@@ -90,6 +90,8 @@ jobs:
               export CASS_DRIVER_NO_EXTENSIONS=1 && \
               pip install -e .[test,experimental_aio] && \
 
+              wget https://fastdl.mongodb.org/linux/mongodb-linux-aarch64-ubuntu2004-5.0.2.tgz && \
+              tar xzf mongodb-linux-aarch64-ubuntu2004-5.0.2.tgz && \
               service mongodb start && \
               service mongodb status && \
               
