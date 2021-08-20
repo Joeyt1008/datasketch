@@ -10,7 +10,7 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  build_x86:
     runs-on: 'ubuntu-latest'
     strategy:
       matrix:
@@ -92,8 +92,8 @@ jobs:
 
               wget https://fastdl.mongodb.org/linux/mongodb-linux-aarch64-ubuntu2004-5.0.2.tgz && \
               tar xzf mongodb-linux-aarch64-ubuntu2004-5.0.2.tgz && \
-              service mongodb start && \
-              service mongodb status && \
+              service mongod start && \
+              service mongod status && \
               
               echo "deb http://debian.datastax.com/community stable main" | tee -a /etc/apt/sources.list.d/cassandra.sources.list && \
               curl -L http://debian.datastax.com/debian/repo_key | apt-key add - && \
