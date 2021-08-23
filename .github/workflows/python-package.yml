@@ -90,7 +90,8 @@ jobs:
               export CASS_DRIVER_NO_EXTENSIONS=1 && \
               pip install -e .[test,experimental_aio] && \
 
-                 echo =============================mongodb 4.4.8 installation==================================
+              echo =============================mongodb 4.4.8 installation==================================
+              apt-get update && apt-get install -y lsb-release && apt-get clean all
               wget -qO - https://www.mongodb.org/static/pgp/server-4.4.asc | apt-key add - && \
               apt-get install gnupg && \
               wget -qO - https://www.mongodb.org/static/pgp/server-4.4.asc | apt-key add - && \
