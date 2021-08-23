@@ -102,7 +102,7 @@ jobs:
               touch /etc/apt/sources.list.d/mongodb-org-4.4.list && \
               echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/4.4 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-4.4.list && \
               apt-get update && \
-              apt-get install -y mongodb-org=4.4.8 mongodb-org-server=4.4.8 mongodb-org-shell=4.4.8 mongodb-org-mongos=4.4.8 mongodb-org-tools=4.4.8 && \
+              apt-get install -y mongodb-org=4.4.8 && \
               echo "mongodb-org hold" | dpkg --set-selections && \
               echo "mongodb-org-server hold" | dpkg --set-selections && \
               echo "mongodb-org-shell hold" | dpkg --set-selections && \
