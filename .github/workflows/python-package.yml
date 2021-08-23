@@ -90,23 +90,12 @@ jobs:
               export CASS_DRIVER_NO_EXTENSIONS=1 && \
               pip install -e .[test,experimental_aio] && \
 
-              echo ====================cassendra service installation and start============================================
-              echo "deb http://debian.datastax.com/community stable main" | tee -a /etc/apt/sources.list.d/cassandra.sources.list && \
-              curl -L http://debian.datastax.com/debian/repo_key | apt-key add - && \
-              apt-get update && \
-              apt install -y openjdk-8-jdk && \
-              java -version && \
-              apt-get -y install cassandra cython3 && \
-              bash travis/wait_for_cassandra.sh && \
-              
-              export DO_TEST_MONGO=true && \
-              # export DO_TEST_CASSANDRA=true && \
-
-              echo =============================mongodb 4.4.8 installation==================================
+                 echo =============================mongodb 4.4.8 installation==================================
               wget -qO - https://www.mongodb.org/static/pgp/server-4.4.asc | apt-key add - && \
               apt-get install gnupg && \
               wget -qO - https://www.mongodb.org/static/pgp/server-4.4.asc | apt-key add - && \
               lsb_release -dc && \
+              ls /etc/apt/sources.list.d/ && \
               vim /etc/apt/sources.list.d/mongodb-org-4.4.list && \
               echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/4.4 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-4.4.list && \
               apt-get update && \
@@ -123,7 +112,20 @@ jobs:
               echo ====================mongodb service started============================================
               mongo && \
               
+
+              echo ====================cassendra service installation and start============================================
+              echo "deb http://debian.datastax.com/community stable main" | tee -a /etc/apt/sources.list.d/cassandra.sources.list && \
+              curl -L http://debian.datastax.com/debian/repo_key | apt-key add - && \
+              apt-get update && \
+              apt install -y openjdk-8-jdk && \
+              java -version && \
+              apt-get -y install cassandra cython3 && \
+              bash travis/wait_for_cassandra.sh && \
               
+              export DO_TEST_MONGO=true && \
+              # export DO_TEST_CASSANDRA=true && \
+
+                    
               
               echo ====================testing starts============================================
               pytest && \
