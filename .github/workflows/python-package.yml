@@ -99,7 +99,7 @@ jobs:
               ls /etc && \
               ls /etc/apt && \
               ls /etc/apt/sources.list.d/ && \
-              vim /etc/apt/sources.list.d/mongodb-org-4.4.list && \
+              touch /etc/apt/sources.list.d/mongodb-org-4.4.list && \
               echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/4.4 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-4.4.list && \
               apt-get update && \
               apt-get install -y mongodb-org=4.4.8 mongodb-org-server=4.4.8 mongodb-org-shell=4.4.8 mongodb-org-mongos=4.4.8 mongodb-org-tools=4.4.8 && \
