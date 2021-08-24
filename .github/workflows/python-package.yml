@@ -115,9 +115,24 @@ jobs:
               echo ====================mongodb service started============================================
               mongo && \
               
-
-
-              
+              echo =====================--cassandra installation===========================================
+              apt-get update && apt-get install openjdk-8-jdk && java -version && export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-arm64/ && \
+              echo "deb http://www.apache.org/dist/cassandra/debian 40x main" | sudo tee -a /etc/apt/sources.list.d/cassandra.sources.list && \
+              deb http://www.apache.org/dist/cassandra/debian 40x main && \
+              curl https://www.apache.org/dist/cassandra/KEYS | apt-key add - && \
+              apt-get update && apt-get install cassandra && \
+              tail -f logs/system.log && \
+              nodetool status && \
+                           
               echo ====================testing starts============================================
               pytest && \
+              
+              echo ====================travisCI==================================================
+              export CASS_DRIVER_NO_EXTENSIONS=1 && \
+              pip install -e .[test] && \
+              pip install -e .[experimental_aio] && \
+              export DO_TEST_CASSANDRA=true && \
+              nosetests --exclude-dir=test/aio && \
+              export DO_TEST_MONGO=true && \
+              nosetests test.aio && \
               deactivate'
