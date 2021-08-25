@@ -79,6 +79,7 @@ jobs:
               python3 -m pip install virtualenv && python3 -m venv py38-venv && \
               source py38-venv/bin/activate && \
               echo ================container setup=============================================
+              apt-get -y install software-properties-common && \
               python -m pip install --upgrade pip && \
               python -m pip install flake8 pytest && \
               python --version && \
@@ -126,14 +127,14 @@ jobs:
               # Disable Cassandra optional extensions (faster testing). 
               export CASS_DRIVER_NO_EXTENSIONS=1 && \
               pip install -e .[test,experimental_aio] && \
-              pytest && \
+              pytest -v && \
               
               echo ====================travisCI==================================================
               export CASS_DRIVER_NO_EXTENSIONS=1 && \
               pip install -e .[test] && \
               pip install -e .[experimental_aio] && \
-              export DO_TEST_MONGO=true && \
-              nosetests test.aio && \
               export DO_TEST_CASSANDRA=true && \
               nosetests --exclude-dir=test/aio && \
+              export DO_TEST_MONGO=true && \
+              nosetests test.aio && \
               deactivate'
