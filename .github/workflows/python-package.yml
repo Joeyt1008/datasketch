@@ -45,6 +45,7 @@ jobs:
         mongodb-version: ${{ matrix.mongodb-version }}
     - name: Install and Start Cassandra
       run: |
+        sudo apt-get -y install software-properties-common
         echo "deb http://www.apache.org/dist/cassandra/debian 40x main" | sudo tee -a /etc/apt/sources.list.d/cassandra.sources.list && \
         deb http://www.apache.org/dist/cassandra/debian 40x main && \
         curl https://www.apache.org/dist/cassandra/KEYS | sudo apt-key add - && \
@@ -111,13 +112,15 @@ jobs:
               echo "mongodb-org-tools hold" | dpkg --set-selections && \
               ps --no-headers -o comm 1 && \
               echo ====================mongodb service starts============================================
-              service mongodb start && \
-              service mongodb status && \
+              systemctl unmask mongod && \
+              service mongod start && \
+              service mongod status && \
               echo ====================mongodb service started============================================
               mongo && \
               
               echo =====================--cassandra installation===========================================
               apt-get update && apt-get install -y openjdk-8-jdk && java -version && export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-arm64/ && \
+              apt-get -y install software-properties-common && \
               echo "deb http://www.apache.org/dist/cassandra/debian 40x main" | tee -a /etc/apt/sources.list.d/cassandra.sources.list && \
               deb http://www.apache.org/dist/cassandra/debian 40x main && \
               curl https://www.apache.org/dist/cassandra/KEYS | apt-key add - && \
