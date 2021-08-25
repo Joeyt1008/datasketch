@@ -86,10 +86,7 @@ jobs:
               whoami && \
               pwd && \
               ls && \
-              # Disable Cassandra optional extensions (faster testing). 
-              export CASS_DRIVER_NO_EXTENSIONS=1 && \
-              pip install -e .[test,experimental_aio] && \
-
+              
               echo =============================mongodb 4.4.8 installation==================================
               apt-get update && apt-get install -y lsb-release && apt-get clean all
               wget -qO - https://www.mongodb.org/static/pgp/server-4.4.asc | apt-key add - && \
@@ -111,29 +108,32 @@ jobs:
               echo "mongodb-org-tools hold" | dpkg --set-selections && \
               ps --no-headers -o comm 1 && \
               echo ====================mongodb service starts============================================
-              service mongod start && \
-              service mongod status && \
+              service mongodb start && \
+              service mongodb status && \
               echo ====================mongodb service started============================================
               mongo && \
               
               echo =====================--cassandra installation===========================================
-              apt-get update && apt-get install openjdk-8-jdk && java -version && export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-arm64/ && \
-              echo "deb http://www.apache.org/dist/cassandra/debian 40x main" | sudo tee -a /etc/apt/sources.list.d/cassandra.sources.list && \
+              apt-get update && apt-get install -y openjdk-8-jdk && java -version && export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-arm64/ && \
+              echo "deb http://www.apache.org/dist/cassandra/debian 40x main" | tee -a /etc/apt/sources.list.d/cassandra.sources.list && \
               deb http://www.apache.org/dist/cassandra/debian 40x main && \
               curl https://www.apache.org/dist/cassandra/KEYS | apt-key add - && \
-              apt-get update && apt-get install cassandra && \
+              apt-get update && apt-get -y install cassandra && \
               tail -f logs/system.log && \
               nodetool status && \
                            
               echo ====================testing starts============================================
+              # Disable Cassandra optional extensions (faster testing). 
+              export CASS_DRIVER_NO_EXTENSIONS=1 && \
+              pip install -e .[test,experimental_aio] && \
               pytest && \
               
               echo ====================travisCI==================================================
               export CASS_DRIVER_NO_EXTENSIONS=1 && \
               pip install -e .[test] && \
               pip install -e .[experimental_aio] && \
-              export DO_TEST_CASSANDRA=true && \
-              nosetests --exclude-dir=test/aio && \
               export DO_TEST_MONGO=true && \
               nosetests test.aio && \
+              export DO_TEST_CASSANDRA=true && \
+              nosetests --exclude-dir=test/aio && \
               deactivate'
