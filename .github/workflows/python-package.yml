@@ -145,4 +145,4 @@ jobs:
 #              curl https://www.apache.org/dist/cassandra/KEYS | apt-key add - && \
 #              apt-get update && apt-get -y install cassandra && \
 #              tail -f logs/system.log && \
-              nodetool status && \
+#              nodetool status && \
