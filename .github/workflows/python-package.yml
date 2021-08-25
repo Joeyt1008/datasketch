@@ -118,12 +118,11 @@ jobs:
               
               echo =====================--cassandra installation===========================================
               apt-get update && apt-get install -y openjdk-8-jdk && java -version && export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-arm64/ && \
-              echo "deb http://www.apache.org/dist/cassandra/debian 40x main" | tee -a /etc/apt/sources.list.d/cassandra.sources.list && \
-              deb http://www.apache.org/dist/cassandra/debian 40x main && \
-              curl https://www.apache.org/dist/cassandra/KEYS | apt-key add - && \
-              apt-get update && apt-get -y install cassandra && \
-              tail -f logs/system.log && \
-              nodetool status && \
+              echo "deb http://debian.datastax.com/community stable main" | tee -a /etc/apt/sources.list.d/cassandra.sources.list && \
+              curl -L http://debian.datastax.com/debian/repo_key | apt-key add - && \
+              apt-get update && apt-get -y install cassandra cython3 && \
+              bash travis/wait_for_cassandra.sh && \
+              
                            
               echo ====================testing starts============================================
               # Disable Cassandra optional extensions (faster testing). 
@@ -140,3 +139,10 @@ jobs:
               export DO_TEST_MONGO=true && \
               nosetests test.aio && \
               deactivate'
+
+#echo "deb http://www.apache.org/dist/cassandra/debian 40x main" | tee -a /etc/apt/sources.list.d/cassandra.sources.list && \
+#              deb http://www.apache.org/dist/cassandra/debian 40x main && \
+#              curl https://www.apache.org/dist/cassandra/KEYS | apt-key add - && \
+#              apt-get update && apt-get -y install cassandra && \
+#              tail -f logs/system.log && \
+              nodetool status && \
