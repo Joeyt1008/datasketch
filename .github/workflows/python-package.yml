@@ -79,9 +79,9 @@ jobs:
               curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
               apt-key fingerprint 0EBFCD88 && \
               add-apt-repository "deb [arch=arm64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" && \
-              apt-get update && \
+              apt update && \
               apt-cache policy docker-ce && \
-              apt install -y docker-ce docker-ce-cli containerd.io && \
+              apt install -y docker-ce && \
               docker info'
             
             
@@ -95,7 +95,7 @@ jobs:
 #              "deb [arch=arm64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" && \
 #              apt update && \
 #              apt-cache policy docker-ce && \
-#              apt install -y docker-ce && \
+#              apt install -y docker-ce docker-ce-cli containerd.io && \
 #              /etc/init.d/docker start && \
               
 #              apt-get install -y python3.8 && \
