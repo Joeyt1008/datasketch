@@ -73,7 +73,7 @@ jobs:
             mongodb-version: latest
         - name: Install and Run tests
           run: |
-            docker run --rm -v /var/run/docker.sock:/var/run/docker.sock ubuntu \
+            docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -ti arm64v8/ubuntu:20.04 \
               bash -exc 'apt update && \
               apt upgrade -y && apt install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common && \
               curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
