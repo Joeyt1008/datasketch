@@ -73,33 +73,46 @@ jobs:
             mongodb-version: latest
         - name: Install and Run tests
           run: |
-            docker run --privileged --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
-              arm64v8/ubuntu:20.04 \
-              bash -exc 'apt update && apt upgrade -y && apt install -y apt-transport-https ca-certificates curl software-properties-common && \
+            docker run --rm -v /var/run/docker.sock:/var/run/docker.sock ubuntu \
+              bash -exc 'apt update && \
+              apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common && \
               curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
-              add-apt-repository \
-              "deb [arch=arm64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" && \
-              apt update && \
-              apt-cache policy docker-ce && \
-              apt install -y docker-ce && \
-              /etc/init.d/docker start && \
+              apt-key fingerprint 0EBFCD88 && \
+              add-apt-repository "deb [arch=arm64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" && \
+              apt-get update && \
+              apt-get install -y docker-ce docker-ce-cli containerd.io && \
+              docker info'
+            
+            
+            
+            
+#            docker run --privileged --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
+#              arm64v8/ubuntu:20.04 \
+#              bash -exc 'apt update && apt upgrade -y && apt install -y apt-transport-https ca-certificates curl software-properties-common && \
+#              curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
+#              add-apt-repository \
+#              "deb [arch=arm64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" && \
+#              apt update && \
+#              apt-cache policy docker-ce && \
+#              apt install -y docker-ce && \
+#              /etc/init.d/docker start && \
               
-              apt-get install -y python3.8 && \
-              python3 --version && \
-              uname -m && \
-              whoami && \
-              pwd && \
-              ls && \
+#              apt-get install -y python3.8 && \
+#              python3 --version && \
+#              uname -m && \
+#              whoami && \
+#              pwd && \
+#              ls && \
               
-              echo $(uname -s) && \
-              echo $(uname -m) && \
-              apt-get install -y docker-compose && \
-              docker --version && \
-              docker-compose --version
+#              echo $(uname -s) && \
+#              echo $(uname -m) && \
+#              apt-get install -y docker-compose && \
+#              docker --version && \
+#              docker-compose --version
               
-              docker pull mongo && \
-              docker search mongodb && \
-              docker exec -it mongodb bash'
+#              docker pull mongo && \
+#              docker search mongodb && \
+#              docker exec -it mongodb bash'
               
 #            docker run --privileged --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
 #              arm64v8/ubuntu:20.04 \
