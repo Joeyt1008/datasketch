@@ -93,10 +93,8 @@ jobs:
               
               echo $(uname -s) && \
               echo $(uname -m) && \
-              curl -L "https://github.com/docker/compose/archive/refs/tags/1.29.2.tar.gz" -o /usr/local/bin/docker-compose && \
-              chmod +x /usr/local/bin/docker-compose && \
-              ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose && \
-              ls /usr/local/bin/ && \
+              apt-get install -y docker-compose && \
+
               docker --version && \
               docker-compose --version'
               
@@ -105,3 +103,7 @@ jobs:
 # 
 #            docker run -itd --privileged docker pull arm64v8/ubuntu:20.04 /usr/sbin/init
 #curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && \
+#              curl -L "https://github.com/docker/compose/archive/refs/tags/1.29.2.tar.gz" -o /usr/local/bin/docker-compose && \
+#              chmod +x /usr/local/bin/docker-compose && \
+#              ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose && \
+#              ls /usr/local/bin/ && \
