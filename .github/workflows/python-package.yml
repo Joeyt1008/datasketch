@@ -94,9 +94,11 @@ jobs:
               echo $(uname -s) && \
               echo $(uname -m) && \
               apt-get install -y docker-compose && \
-
               docker --version && \
-              docker-compose --version'
+              docker-compose --version
+              
+              docker search mongodb && \
+              docker exec -it mongodb bash'
               
 #            docker run --privileged --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
 #              arm64v8/ubuntu:20.04 \
