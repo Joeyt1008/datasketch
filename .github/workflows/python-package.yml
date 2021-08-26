@@ -82,7 +82,7 @@ jobs:
               apt update && \
               apt-cache policy docker-ce && \
               apt install -y docker-ce && \
-              systemctl status docker && \
+              /etc/init.d/docker start && \
 
               python --version && \
               uname -m && \
