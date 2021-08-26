@@ -74,7 +74,7 @@ jobs:
         - name: Install and Run tests
           run: |
             docker run -itd --privileged --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
-              arm64v8/ubuntu:20.04 /usr/sbin/init \
+              arm64v8/ubuntu:20.04 \
               bash -exc 'sudo apt update && sudo apt upgrade -y && sudo apt install -y apt-transport-https ca-certificates curl software-properties-common && \
               curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - && \
               sudo add-apt-repository \
