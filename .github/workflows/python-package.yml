@@ -73,7 +73,8 @@ jobs:
             mongodb-version: latest
         - name: Install and Run tests
           run: |
-            docker run -itd --privileged docker pull arm64v8/ubuntu:20.04 /usr/sbin/init
+            docker run -itd --privileged --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
+              arm64v8/ubuntu:20.04 /usr/sbin/init \
               bash -exc 'sudo apt update && sudo apt upgrade -y && sudo apt install -y apt-transport-https ca-certificates curl software-properties-common && \
               curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - && \
               sudo add-apt-repository \
@@ -91,3 +92,5 @@ jobs:
               
 #            docker run --privileged --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
 #              arm64v8/ubuntu:20.04 \
+# 
+#            docker run -itd --privileged docker pull arm64v8/ubuntu:20.04 /usr/sbin/init
