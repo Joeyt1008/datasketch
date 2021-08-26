@@ -81,10 +81,9 @@ jobs:
               "deb [arch=arm64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" && \
               apt update && \
               apt-cache policy docker-ce && \
-              apt install -y docker-ce && \ 
+              apt install -y docker-ce && \
               /etc/init.d/docker start && \
-              
-             
+            
               apt-get install -y python3.8 && \
               python --version && \
               uname -m && \
