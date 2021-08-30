@@ -44,8 +44,13 @@ install:
   #- docker-compose --version
   - docker --version
   - sudo docker search mongodb
+
+script:
   - mkdir -pv mongodb/database
-  
+  - tree mongodb
+  - sudo docker-compose up -d
+  - sudo docker ps -a
+  - sudo tree mongodb
   
   
   
