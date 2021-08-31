@@ -37,11 +37,10 @@ install:
   - sudo systemctl status docker
   - echo $(uname -s)
   - echo $(uname -m)
-  - sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-  - sudo chmod +x /usr/local/bin/docker-compose
-  - sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
-  - file /usr/local/bin/docker-compose
-  #- docker-compose --version
+  - sudo apt-get install -qy python-pip --no-install-recommends 
+  - pip install pip --upgrade 
+  - pip install docker-compose
+  - docker-compose --version
   - docker --version
   - sudo docker search mongodb
 
@@ -82,3 +81,9 @@ script:
 #  - sudo apt-get update && sudo apt-get install -y lsb-release && sudo apt-get clean all
 #  - sudo apt update && sudo apt upgrade -y
 #  - sudo apt list --upgradable
+
+
+#  - sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+#  - sudo chmod +x /usr/local/bin/docker-compose
+#  - sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+#  - file /usr/local/bin/docker-compose
