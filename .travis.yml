@@ -42,10 +42,14 @@ install:
   - pip install docker-compose
   - docker-compose --version
   - docker --version
+  - sudo apt-get install tree
+  - tree --version
   - sudo docker search mongodb
 
 script:
   - mkdir -pv mongodb/database
+  - ls mongodb/
+  - ls mongodb/database
   - tree mongodb
   - sudo docker-compose up -d
   - sudo docker ps -a
