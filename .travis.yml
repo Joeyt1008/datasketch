@@ -53,22 +53,25 @@ script:
   - ls mongodb/database
   - tree mongodb
   - pwd
-  - sudo docker-compose up -d
+  #- sudo docker-compose up -d
   - sudo docker ps -a
   - sudo tree mongodb
-  
-  
-  
+  - sudo docker exec -it mongodb bash
+  - sudo docker logs mongodb  
   # Disable Cassandra optional extensions (faster testing).
-  #- echo "deb http://debian.datastax.com/community stable main" | tee -a /etc/apt/sources.list.d/cassandra.sources.list
-  #- curl -L http://debian.datastax.com/debian/repo_key | apt-key add -
-  #- apt-get update
-  #- apt-get -y install openjdk-8-jdk
-  #- java -version
-  #- apt-get -y install cassandra cython3
-  #- bash travis/wait_for_cassandra.sh && \
-  #- export CASS_DRIVER_NO_EXTENSIONS=1
-  #- pip install -e .[test]
+  - echo "deb http://debian.datastax.com/community stable main" | tee -a /etc/apt/sources.list.d/cassandra.sources.list
+  - curl -L http://debian.datastax.com/debian/repo_key | apt-key add -
+  - apt-get update
+  - apt-get -y install openjdk-8-jdk
+  - java -version
+  - apt-get -y install cassandra cython3
+  - bash travis/wait_for_cassandra.sh && \
+  - export CASS_DRIVER_NO_EXTENSIONS=1
+  - pip install -e .[test]
+  - pip install -e .[experimental_aio]
+  - bash travis/wait_for_cassandra.sh
+  
+  
   #- if [[ $TRAVIS_PYTHON_VERSION == '3.6' || $TRAVIS_PYTHON_VERSION == '3.7' || $TRAVIS_PYTHON_VERSION == '3.8' || $TRAVIS_PYTHON_VERSION == 'nightly' ]]; then pip install -e .[experimental_aio]; fi
 #before_script:
  # - bash travis/wait_for_cassandra.sh
