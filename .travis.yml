@@ -51,12 +51,12 @@ install:
   - sudo service mongod status
   - echo ====================mongodb service started============================================
     # Disable Cassandra optional extensions (faster testing).
-  - echo "deb http://debian.datastax.com/community stable main" | tee -a /etc/apt/sources.list.d/cassandra.sources.list
-  - curl -L http://debian.datastax.com/debian/repo_key | apt-key add -
-  - apt-get update
-  - apt-get -y install openjdk-8-jdk
+  - echo "deb http://debian.datastax.com/community stable main" | sudo tee -a /etc/apt/sources.list.d/cassandra.sources.list
+  - curl -L http://debian.datastax.com/debian/repo_key | sudo apt-key add -
+  - sudo apt-get update
+  - sudo apt-get -y install openjdk-8-jdk
   - java -version
-  - apt-get -y install cassandra cython3
+  - sudo apt-get -y install cassandra cython3
   - bash travis/wait_for_cassandra.sh && \
   - export CASS_DRIVER_NO_EXTENSIONS=1
   - pip install -e .[test]
