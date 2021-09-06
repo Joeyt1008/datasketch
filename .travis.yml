@@ -59,7 +59,9 @@ install:
   #- sudo apt-get -y install cassandra cython3
   #- bash travis/wait_for_cassandra.sh && \
   - export CASS_DRIVER_NO_EXTENSIONS=1
-  - pip install datasketch[cassandra, redis, scipy]
+  - pip install datasketch[cassandra]
+  - pip install datasketch[redis]
+  - pip install datasketch[scipy]
   - pip install -e .[test]
   - pip install -e .[experimental_aio]
   - rpc_address=127.0.0.1
