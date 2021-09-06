@@ -64,8 +64,11 @@ install:
   - pip install datasketch[scipy]
   - pip install -e .[test]
   - pip install -e .[experimental_aio]
-  - rpc_address=127.0.0.1
-  - listen_address=127.0.0.1
+  - export rpc_address=127.0.0.1
+  - export listen_address=127.0.0.1
+  - export start_rpc=true
+  - JVM_OPTS="$JVM_OPTS -Djava.rmi.server.hostname=127.0.0.1
+  - export native_transport_port=9842
   - sudo systemctl restart cassandra.service
   - sudo service cassandra status
   - bash travis/wait_for_cassandra.sh
