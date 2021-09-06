@@ -70,6 +70,7 @@ install:
   #- export seeds=127.0.0.1
   #- export JVM_OPTS="$JVM_OPTS -Djava.rmi.server.hostname=127.0.0.1
   #- export native_transport_port=9842
+  - find . -name "*cqlsh"
   - sudo systemctl restart cassandra.service
   - sudo service cassandra status
   #- bash travis/wait_for_cassandra.sh
