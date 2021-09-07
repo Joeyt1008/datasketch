@@ -33,7 +33,7 @@ install:
   - sudo sh -c 'echo "deb http://www.apache.org/dist/cassandra/debian 311x main" > /etc/apt/sources.list.d/cassandra.list'
   - sudo apt update
   - sudo apt install cassandra
-  - tail -f logs/system.log
+  #- tail -f logs/system.log
   #- nodetool status
   - cqlsh
   - UPDATE system.local SET cluster_name = 'Linuxize Cluster' WHERE KEY = 'local';
