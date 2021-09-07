@@ -33,7 +33,13 @@ install:
   - sudo sh -c 'echo "deb http://www.apache.org/dist/cassandra/debian 311x main" > /etc/apt/sources.list.d/cassandra.list'
   - sudo apt update
   - sudo apt install cassandra
-  - nodetool status
+  - tail -f logs/system.log
+  #- nodetool status
+  - cqlsh
+  - UPDATE system.local SET cluster_name = 'Linuxize Cluster' WHERE KEY = 'local';
+  - cluster_name: 'Linuxize Cluster'
+  - nodetool flush system
+  - sudo systemctl restart cassandra
   # Disable Cassandra optional extensions (faster testing).
   - export CASS_DRIVER_NO_EXTENSIONS=1
   - pip install -e .[test]
