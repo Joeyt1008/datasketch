@@ -1,18 +1,15 @@
 language: python
-
 python:
   - "3.8"
   # - "nightly"
   # TODO: add nightly back when this issue is fixed: https://github.com/cython/cython/issues/3266
-  
 arch:
   - arm64
-
 addons:
   apt:
     sources:
       - sourceline: 'ppa:openjdk-r/ppa'
-      - sourceline: 'deb http://www.apache.org/dist/cassandra/debian 311x main' 
+      - sourceline: 'deb http://www.apache.org/dist/cassandra/debian 311x main'
         key_url: &apache-key https://www.apache.org/dist/cassandra/KEYS
       - sourceline: 'deb-src http://www.apache.org/dist/cassandra/debian 311x main'
         key_url: *apache-key
@@ -26,125 +23,31 @@ services:
   - native_transport_port:9042
   - cassandra
   - mongodb
-  
 install:
-
-  - sudo apt-get update && sudo apt-get install -y lsb-release && sudo apt-get clean all
-  - wget -qO - https://www.mongodb.org/static/pgp/server-4.4.asc | sudo apt-key add -
-  - sudo apt-get install gnupg
-  - wget -qO - https://www.mongodb.org/static/pgp/server-4.4.asc | sudo apt-key add -
-  - lsb_release -dc
-  - ls /etc
-  - ls /etc/apt 
-  - ls /etc/apt/sources.list.d/
-  - sudo touch /etc/apt/sources.list.d/mongodb-org-4.4.list
-  - echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/4.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.4.list
-  - sudo apt-get update
-  - sudo ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime && export DEBIAN_FRONTEND=noninteractive && sudo apt-get install -y tzdata && sudo dpkg-reconfigure --frontend noninteractive tzdata
-  - sudo apt-get install -y mongodb-org=4.4.8
-  - echo "mongodb-org hold" | sudo dpkg --set-selections
-  - echo "mongodb-org-server hold" | sudo dpkg --set-selections
-  - echo "mongodb-org-shell hold" | sudo dpkg --set-selections
-  - echo "mongodb-org-mongos hold" | sudo dpkg --set-selections
-  - echo "mongodb-org-tools hold" | sudo dpkg --set-selections
-  - ps --no-headers -o comm 1 
-  - echo ====================mongodb service starts============================================
-  - sudo systemctl unmask mongod
-  - sudo service mongod start
-  - sudo service mongod status
-  - echo ====================mongodb service started============================================
-    # Disable Cassandra optional extensions (faster testing).
-  #- echo "deb http://debian.datastax.com/community stable main" | sudo tee -a /etc/apt/sources.list.d/cassandra.sources.list
-  #- curl -L http://debian.datastax.com/debian/repo_key | sudo apt-key add -
-  #- sudo apt-get update
-  #- sudo apt-get -y install openjdk-8-jdk
-  #- java -version
-  #- sudo apt-get -y install cassandra cython3
-  #- bash travis/wait_for_cassandra.sh && \
+  - echo ===========Cassandra Installation======================
+  - sudo apt update
+  - sudo apt install openjdk-8-jdk
+  - java -version
+  - sudo apt install apt-transport-https
+  - wget -q -O - https://www.apache.org/dist/cassandra/KEYS | sudo apt-key add -
+  - sudo sh -c 'echo "deb http://www.apache.org/dist/cassandra/debian 311x main" > /etc/apt/sources.list.d/cassandra.list'
+  - sudo apt update
+  - sudo apt install cassandra
+  - nodetool status
+  # Disable Cassandra optional extensions (faster testing).
   - export CASS_DRIVER_NO_EXTENSIONS=1
-  - pip install datasketch[cassandra]
-  - pip install datasketch[redis]
-  - pip install datasketch[scipy]
   - pip install -e .[test]
-  - pip install -e .[experimental_aio]
-  #- export rpc_address=127.0.0.1
-  #- export listen_address=127.0.0.1
-  #- export start_rpc=true
-  #- export seeds=127.0.0.1
-  #- export JVM_OPTS="$JVM_OPTS -Djava.rmi.server.hostname=127.0.0.1
-  #- export native_transport_port=9842
-  #- sudo find / -name cqlsh
+  - if [[ $TRAVIS_PYTHON_VERSION == '3.6' || $TRAVIS_PYTHON_VERSION == '3.7' || $TRAVIS_PYTHON_VERSION == '3.8' || $TRAVIS_PYTHON_VERSION == 'nightly' ]]; then pip install -e .[experimental_aio]; fi
+before_script:
   - ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'
   - sudo systemctl restart cassandra.service
   - sudo service cassandra status
   - bash travis/wait_for_cassandra.sh
-  
+  - bash travis/wait_for_cassandra.sh
 script:
+  # Run non aio tests first because Python versions before 3.6 does not support aio.
   - export DO_TEST_CASSANDRA=true
   - nosetests --exclude-dir=test/aio
   # Run aio tests.
   - export DO_TEST_MONGO=true
-  - nosetests test.aio
-
-#install:
-  #Installation of mongodb
-  #- sudo apt-get install -y language-pack-en
-  #- export LC_CTYPE=en_US.UTF-8
-  #- sudo apt update
-  #- sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
-  #- curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-  #- sudo add-apt-repository "deb [arch=arm64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-  #- sudo apt update
-  #- sudo apt-cache policy docker-ce
-  #- sudo apt install -y docker-ce
-  #- sudo systemctl status docker
-  #- echo $(uname -s)
-  #- echo $(uname -m)
-  #- sudo apt-get install -qy python-pip --no-install-recommends 
-  #- pip install pip --upgrade 
-  #- pip install docker-compose
-  #- docker-compose --version
-  #- docker --version
-  #- sudo apt-get install tree
-  #- tree --version
-  #- sudo docker search mongodb
-
-#script:
-  #- pwd
-  #- mkdir -pv mongodb/database
-  #- ls mongodb/
-  #- ls mongodb/database
-  #- tree mongodb
-  #- pwd
-  #- sudo docker-compose up -d
-  #- sudo docker ps -a
-  #- sudo tree mongodb
-  #- sudo docker exec -it mongodb bash
-  #- sudo docker logs mongodb  
-
-  
-  
-  #- if [[ $TRAVIS_PYTHON_VERSION == '3.6' || $TRAVIS_PYTHON_VERSION == '3.7' || $TRAVIS_PYTHON_VERSION == '3.8' || $TRAVIS_PYTHON_VERSION == 'nightly' ]]; then pip install -e .[experimental_aio]; fi
-#before_script:
- # - bash travis/wait_for_cassandra.sh
-#script:
-  # Run non aio tests first because Python versions before 3.6 does not support aio.
-  #- export DO_TEST_CASSANDRA=true
-  #- nosetests --exclude-dir=test/aio
-  # Run aio tests.
-  #- export DO_TEST_MONGO=true
-  #- if [[ $TRAVIS_PYTHON_VERSION == '3.6' || $TRAVIS_PYTHON_VERSION == '3.7' || $TRAVIS_PYTHON_VERSION == '3.8' || $TRAVIS_PYTHON_VERSION == 'nightly' ]]; then nosetests test.aio; fi
-
-
-#  - sudo rm -rf libevent-core-2.0-5
-#  - sudo apt-get install -y distro-info libzstd1 python3-distro-info
-#  - sudo apt autoremove
-#  - sudo apt-get update && sudo apt-get install -y lsb-release && sudo apt-get clean all
-#  - sudo apt update && sudo apt upgrade -y
-#  - sudo apt list --upgradable
-
-
-#  - sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-#  - sudo chmod +x /usr/local/bin/docker-compose
-#  - sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
-#  - file /usr/local/bin/docker-compose
+  - if [[ $TRAVIS_PYTHON_VERSION == '3.6' || $TRAVIS_PYTHON_VERSION == '3.7' || $TRAVIS_PYTHON_VERSION == '3.8' || $TRAVIS_PYTHON_VERSION == 'nightly' ]]; then nosetests test.aio; fi
